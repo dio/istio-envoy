@@ -62,10 +62,13 @@ DnsResolverImpl::~DnsResolverImpl() {
 
 DnsResolverImpl::AresOptions DnsResolverImpl::defaultAresOptions() {
   AresOptions options{};
+  options.optmask_ |= ARES_OPT_FLAGS;
 
   if (use_tcp_for_dns_lookups_) {
-    options.optmask_ |= ARES_OPT_FLAGS;
     options.options_.flags |= ARES_FLAG_USEVC;
+    options.options_.flags |= ARES_FLAG_NOSEARCH;
+  } else {
+    options.options_.flags |= ARES_FLAG_NOSEARCH;
   }
 
   return options;
