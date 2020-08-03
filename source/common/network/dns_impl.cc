@@ -62,13 +62,10 @@ DnsResolverImpl::~DnsResolverImpl() {
 
 DnsResolverImpl::AresOptions DnsResolverImpl::defaultAresOptions() {
   AresOptions options{};
-  options.optmask_ |= ARES_OPT_FLAGS;
 
   if (use_tcp_for_dns_lookups_) {
+    options.optmask_ |= ARES_OPT_FLAGS;
     options.options_.flags |= ARES_FLAG_USEVC;
-    options.options_.flags |= ARES_FLAG_NOSEARCH;
-  } else {
-    options.options_.flags |= ARES_FLAG_NOSEARCH;
   }
 
   return options;
@@ -79,6 +76,7 @@ void DnsResolverImpl::initializeChannel(ares_options* options, int optmask) {
     static_cast<DnsResolverImpl*>(arg)->onAresSocketStateChange(fd, read, write);
   };
   options->sock_state_cb_data = this;
+  options->ndomains = 0;
   ares_init_options(&channel_, options, optmask | ARES_OPT_SOCK_STATE_CB);
 }
 
