@@ -77,7 +77,8 @@ void DnsResolverImpl::initializeChannel(ares_options* options, int optmask) {
   };
   options->sock_state_cb_data = this;
   options->ndomains = 0;
-  ares_init_options(&channel_, options, optmask | ARES_OPT_SOCK_STATE_CB);
+  ares_init_options(&channel_, options,
+                    optmask | ARES_OPT_FLAGS | ARES_OPT_DOMAINS | ARES_OPT_SOCK_STATE_CB);
 }
 
 void DnsResolverImpl::PendingResolution::onAresGetAddrInfoCallback(int status, int timeouts,
